@@ -1134,7 +1134,7 @@ fn serialize_struct_visitor(
                             if !#skip {
                                 #ser
                             } else {
-                                try!(#skip_func(&mut __serde_state, #key_expr));
+                                try!(#skip_func(&mut __serde_state, #key_expr, #field_expr));
                             }
                         }
                     } else {
@@ -1306,10 +1306,10 @@ impl StructTrait {
         match *self {
             StructTrait::SerializeMap => None,
             StructTrait::SerializeStruct => {
-                Some(quote_spanned!(span=> _serde::ser::SerializeStruct::skip_field))
+                Some(quote_spanned!(span=> _serde::ser::SerializeStruct::skip_field_if_possible))
             }
             StructTrait::SerializeStructVariant => {
-                Some(quote_spanned!(span=> _serde::ser::SerializeStructVariant::skip_field))
+                Some(quote_spanned!(span=> _serde::ser::SerializeStructVariant::skip_field_if_possible))
             }
         }
     }

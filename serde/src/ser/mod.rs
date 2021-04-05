@@ -1876,10 +1876,15 @@ pub trait SerializeStruct {
     where
         T: Serialize;
 
-    /// Indicate that a struct field has been skipped.
+    /// Indicate that a struct field can be skipped.
+    ///
+    /// `value` is provided so that serialization formats that cannot skip fields may serialize it anyway
     #[inline]
-    fn skip_field(&mut self, key: &'static str) -> Result<(), Self::Error> {
+    fn skip_field_if_possible<T: ?Sized>(&mut self, key: &'static str, value: &T) -> Result<(), Self::Error> 
+    where
+        T: Serialize {
         let _ = key;
+        let _ = value;
         Ok(())
     }
 
@@ -1942,10 +1947,15 @@ pub trait SerializeStructVariant {
     where
         T: Serialize;
 
-    /// Indicate that a struct variant field has been skipped.
+    /// Indicate that a struct variant field can be skipped.
+    ///
+    /// `value` is provided so that serialization formats that cannot skip fields may serialize it anyway
     #[inline]
-    fn skip_field(&mut self, key: &'static str) -> Result<(), Self::Error> {
+    fn skip_field_if_possible<T: ?Sized>(&mut self, key: &'static str, value: &T) -> Result<(), Self::Error> 
+    where
+        T: Serialize {
         let _ = key;
+        let _ = value;
         Ok(())
     }
 
